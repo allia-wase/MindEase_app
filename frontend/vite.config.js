@@ -14,6 +14,14 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true
+    sourcemap: true,
+    css: {
+      devSourcemap: true
+    }
+  },
+  css: {
+    modules: {
+      localsConvention: 'camelCase'
+    }
   }
 })
