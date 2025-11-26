@@ -1,13 +1,15 @@
 {
   "name": "mind-ease-frontend",
   "version": "1.0.0",
-  "description": "Frontend for MindEase mental health app",
+  "description": "React Frontend for MindEase Mental Health App",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0 --port 3000",
     "build": "vite build",
-    "preview": "vite preview",
-    "test": "vitest"
+    "preview": "vite preview --port 4173",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -19,7 +21,20 @@
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
     "vite": "^4.4.5",
     "vitest": "^0.34.0"
-  }
+  },
+  "keywords": [
+    "react",
+    "mental-health",
+    "university",
+    "dashboard",
+    "self-assessment"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
 }
