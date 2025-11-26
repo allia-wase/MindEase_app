@@ -1,9 +1,11 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-require('dotenv').config();
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 
@@ -33,12 +35,19 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mindease'
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('MongoDB connection error:', err));
 
+// Import routes using ES modules
+import authRoutes from './routes/auth.js';
+import assessmentRoutes from './routes/assessments.js';
+import moodRoutes from './routes/mood.js';
+import counselorRoutes from './routes/counselors.js';
+import resourceRoutes from './routes/resources.js';
+
 // Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/assessments', require('./routes/assessments'));
-app.use('/api/mood', require('./routes/mood'));
-app.use('/api/counselors', require('./routes/counselors'));
-app.use('/api/resources', require('./routes/resources'));
+app.use('/api/auth', authRoutes);
+app.use('/api/assessments', assessmentRoutes);
+app.use('/api/mood', moodRoutes);
+app.use('/api/counselors', counselorRoutes);
+app.use('/api/resources', resourceRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
