@@ -1,14 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/brain-icon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MindEase - Mental Health Support</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>MindEase</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" onclick="showSection('home')">Home</a>
+                <a href="#" onclick="showSection('dashboard')" id="dashboard-link" style="display:none">Dashboard</a>
+                <a href="#" onclick="showSection('crisis')">Crisis Support</a>
+            </div>
+            <div class="auth-buttons">
+                <button onclick="showSection('login')" id="login-btn" class="btn btn-outline">Login</button>
+                <button onclick="showSection('signup')" id="signup-btn" class="btn btn-primary">Sign Up</button>
+                <button onclick="logout()" id="logout-btn" class="btn btn-outline" style="display:none">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <h1>Your Mental Health Matters</h1>
+                <p>Supporting university students through their mental wellness journey</p>
+                <div class="hero-buttons">
+                    <button onclick="showSection('signup')" class="btn btn-primary">Get Started</button>
+                    <button onclick="showSection('login')" class="btn btn-outline">Login</button>
+                </div>
+            </div>
+
+            <div class="features">
+                <h2>How We Support You</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-clipboard-check"></i>
+                        <h3>Self-Assessment</h3>
+                        <p>Confidential mental health assessments</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-smile"></i>
+                        <h3>Mood Tracking</h3>
+                        <p>Monitor your emotional wellbeing</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-first-aid"></i>
+                        <h3>Crisis Support</h3>
+                        <p>Immediate access to emergency resources</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Login Section -->
+        <section id="login" class="section">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h2>Welcome Back</h2>
+                    <form onsubmit="login(event)">
+                        <input type="email" id="login-email" placeholder="Email" required>
+                        <input type="password" id="login-password" placeholder="Password" required>
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </form>
+                    <p>Don't have an account? <a href="#" onclick="showSection('signup')">Sign up</a></p>
+                    <div id="login-error" class="error-message"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Signup Section -->
+        <section id="signup" class="section">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h2>Create Account</h2>
+                    <form onsubmit="signup(event)">
+                        <input type="text" id="signup-firstname" placeholder="First Name" required>
+                        <input type="text" id="signup-lastname" placeholder="Last Name" required>
+                        <input type="email" id="signup-email" placeholder="Email" required>
+                        <input type="text" id="signup-university" placeholder="University" required>
+                        <input type="text" id="signup-studentid" placeholder="Student ID" required>
+                        <input type="password" id="signup-password" placeholder="Password" required>
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                    </form>
+                    <p>Already have an account? <a href="#" onclick="showSection('login')">Sign in</a></p>
+                    <div id="signup-error" class="error-message"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section">
+            <div class="dashboard-container">
+                <h2>Welcome, <span id="user-name"></span>!</h2>
+                
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-smile"></i> Today's Mood</h3>
+                        <div class="mood-tracker">
+                            <div class="mood-option" onclick="trackMood('very_sad')">😢</div>
+                            <div class="mood-option" onclick="trackMood('sad')">😔</div>
+                            <div class="mood-option" onclick="trackMood('neutral')">😐</div>
+                            <div class="mood-option" onclick="trackMood('happy')">😊</div>
+                            <div class="mood-option" onclick="trackMood('very_happy')">😄</div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-clipboard-check"></i> Self-Assessment</h3>
+                        <p>Check your mental health status</p>
+                        <button onclick="startAssessment()" class="btn btn-primary">Start Assessment</button>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-chart-line"></i> Mood History</h3>
+                        <div id="mood-history"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Assessment Section -->
+        <section id="assessment" class="section">
+            <div class="assessment-container">
+                <h2>Mental Health Assessment</h2>
+                <div id="question-container"></div>
+                <div class="assessment-nav">
+                    <button onclick="previousQuestion()" id="prev-btn" class="btn btn-outline">Previous</button>
+                    <span id="progress">Question 1 of 9</span>
+                    <button onclick="nextQuestion()" id="next-btn" class="btn btn-primary">Next</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results" class="section">
+            <div class="results-container">
+                <h2>Assessment Results</h2>
+                <div id="results-content"></div>
+                <button onclick="showSection('dashboard')" class="btn btn-primary">Back to Dashboard</button>
+            </div>
+        </section>
+
+        <!-- Crisis Support Section -->
+        <section id="crisis" class="section">
+            <div class="crisis-container">
+                <h2><i class="fas fa-first-aid"></i> Immediate Support</h2>
+                <p>If you're in crisis, please reach out immediately:</p>
+                <div id="crisis-contacts"></div>
+                <button onclick="showSection('home')" class="btn btn-primary">I've Reached Out</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
 </html>
